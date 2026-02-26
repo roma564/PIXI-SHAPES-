@@ -2,13 +2,13 @@ import { useCallback } from 'react';
 import type { FC } from 'react';
 import { Graphics as PixiGraphics, FederatedPointerEvent } from 'pixi.js';
 
-// 1. Define the interface with ALL the props you are passing
+
 interface FallingShapeProps {
-    id: string;      // The error said 'id' was missing here
+    id: string;      
     x: number;
     y: number;
     color: number;
-    onPop: (id: string) => void; // The error said 'onPop' was missing here
+    onPop: (id: string) => void; 
 }
 
 export const FallingShape: FC<FallingShapeProps> = ({ id, x, y, color, onPop }) => {
@@ -25,7 +25,7 @@ export const FallingShape: FC<FallingShapeProps> = ({ id, x, y, color, onPop }) 
             cursor="pointer"
             onPointerDown={(e: FederatedPointerEvent) => {
                 e.stopPropagation();
-                onPop(id); // Now TS knows what 'id' and 'onPop' are!
+                onPop(id);
             }}
         />
     );

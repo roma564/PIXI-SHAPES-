@@ -32,7 +32,6 @@ export const ShapeManager = () => {
         setShapes((prev) => [...prev, newShape]);
     }, []);
 
-    // 3. The Animation Loop (v8 Ticker)
     
     useTick((ticker: Ticker) => {
         setShapes((prev) =>
