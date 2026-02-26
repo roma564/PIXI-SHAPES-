@@ -1,28 +1,13 @@
-import {
-    Application,
-    extend,
-} from '@pixi/react';
-import {
-    Container,
-    Graphics,
-    Sprite,
-} from 'pixi.js';
+import { Application, extend } from '@pixi/react';
+import { Container, Graphics } from 'pixi.js';
+import { ShapeManager } from './components/ShapeManager';
 
-import { BunnySprite } from './components/BunnySprite';
-
-// extend tells @pixi/react what Pixi.js components are available
-extend({
-    Container,
-    Graphics,
-    Sprite,
-});
+extend({ Container, Graphics });
 
 export default function App() {
     return (
-        // We'll wrap our components with an <Application> component to provide
-        // the Pixi.js Application context
-        <Application>
-            <BunnySprite />
+        <Application background="#1a1a1a" width={800} height={600}>
+            <ShapeManager />
         </Application>
     );
 }
