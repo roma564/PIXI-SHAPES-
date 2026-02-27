@@ -13,7 +13,9 @@ interface FallingShapeProps {
 
 export const FallingShape: FC<FallingShapeProps> = ({ id, x, y, color, onPop }) => {
     const draw = useCallback((g: PixiGraphics) => {
-        g.clear().beginFill(color).drawCircle(0, 0, 30).endFill();
+                g.clear()
+                    .circle(0, 0, 30)
+                    .fill(color);
     }, [color]);
 
     return (

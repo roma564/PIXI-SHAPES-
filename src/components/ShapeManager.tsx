@@ -54,9 +54,8 @@ export const ShapeManager = () => {
                 onPointerDown={(e: FederatedPointerEvent) => spawn(e.global.x, e.global.y)}
                 draw={(g: PixiGraphics) => {
                     g.clear()
-                        .beginFill(0x1a1a1a) // Dark background
-                        .drawRect(0, 0, WIDTH, HEIGHT)
-                        .endFill();
+                    .rect(0, 0, WIDTH, HEIGHT)
+                    .fill(0x1a1a1a);
                 }}
             />
 
