@@ -1,18 +1,9 @@
 import { useCallback, useEffect } from 'react';
 import type { FC } from 'react';
 import { Graphics as PixiGraphics, FederatedPointerEvent, TextStyle, Application } from 'pixi.js';
-import { useApplication } from '@pixi/react';
+import { labelStyle } from '../styles/labelStyle';
 
 
-
-const labelStyle = new TextStyle({
-    fontFamily: 'Arial',
-    fontSize: 50,
-    fontWeight: 'bold',
-    fill: '#ff0000',
-    stroke: { color: '#000000', width: 4 },
-    dropShadow: { color: '#000000', blur: 4, distance: 2 },
-});
 
 interface FallingShapeProps {
     id: string;      
@@ -76,7 +67,7 @@ export const FallingShape: FC<FallingShapeProps> = ({ id, x, y, color, type, onP
                 text={type.toUpperCase()} 
                 style={labelStyle} 
                 anchor={0.5} // Centers the text
-                y={200}       // Positions it slightly below the shape
+                y={70}       // Positions it slightly below the shape
             />
             
         </pixiContainer>
