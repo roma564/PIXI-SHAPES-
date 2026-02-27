@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react';
-import { useTick } from '@pixi/react';
-import { Graphics as PixiGraphics, FederatedPointerEvent, Ticker } from 'pixi.js';
+import { useState, useCallback, useEffect } from 'react';
+import { useApplication, useTick } from '@pixi/react';
+import { Graphics as PixiGraphics, FederatedPointerEvent, Ticker, Application } from 'pixi.js';
 import { FallingShape } from './FallingShape';
 import { SHAPE_TYPES, type ShapeData } from '../types/ShapeType';
 
@@ -9,7 +9,18 @@ const GRAVITY = 0.5;
 const WIDTH = 800;
 const HEIGHT = 600;
 
+declare global {
+  var __PIXI_APP__:  Application;
+}
+
+
 export const ShapeManager = () => {
+
+    const {app} = useApplication();
+    useEffect(() => {
+        globalThis.__PIXI_APP__ = app;
+    }, [app]);
+
     // 2. Explicitly type the state as an array of ShapeData
     const [shapes, setShapes] = useState<ShapeData[]>([]);
 
