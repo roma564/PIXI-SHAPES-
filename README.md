@@ -59,8 +59,8 @@ The project uses **Zustand** as the central "Source of Truth," bridging the gap 
 
 1. **Clone the repository:**
 ```bash
-git clone https://github.com/your-username/pixi-falling-shapes.git
-cd pixi-falling-shapes
+git clone https://github.com/roma564/PIXI-SHAPES-.git
+cd PIXI-SHAPES
 
 ```
 
