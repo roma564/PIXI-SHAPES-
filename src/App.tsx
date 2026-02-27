@@ -17,7 +17,7 @@ export default function App() {
     return (
         <div className="relative w-[800px] h-[600px] mx-auto mt-10 font-sans select-none overflow-hidden rounded-xl border border-white/10 shadow-2xl">
             
-            {/* 2. TOP LEFT HUD (The text fields you requested) */}
+        
             <div className="absolute top-4 left-4 z-20 flex flex-col gap-2 pointer-events-none">
                 {/* Shape Count Field */}
                 <div className="bg-black/60 backdrop-blur-md border border-white/10 p-3 rounded-md min-w-[140px]">
