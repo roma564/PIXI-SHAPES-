@@ -2,15 +2,8 @@ import { useState, useCallback } from 'react';
 import { useTick } from '@pixi/react';
 import { Graphics as PixiGraphics, FederatedPointerEvent, Ticker } from 'pixi.js';
 import { FallingShape } from './FallingShape';
+import { SHAPE_TYPES, type ShapeData } from '../types/ShapeType';
 
-// 1. Define the interface for our state objects
-export interface ShapeData {
-    id: string;
-    x: number;
-    y: number;
-    vy: number;
-    color: number;
-}
 
 const GRAVITY = 0.5;
 const WIDTH = 800;
@@ -20,17 +13,23 @@ export const ShapeManager = () => {
     // 2. Explicitly type the state as an array of ShapeData
     const [shapes, setShapes] = useState<ShapeData[]>([]);
 
-    // Function to spawn a shape at specific coordinates
-    const spawn = useCallback((x: number, y: number) => {
-        const newShape: ShapeData = {
-            id: crypto.randomUUID(),
-            x,
-            y,
-            vy: 0,
-            color: Math.floor(Math.random() * 0xffffff),
-        };
-        setShapes((prev) => [...prev, newShape]);
-    }, []);
+        // Function to spawn a shape at specific coordinates
+        
+        const spawn = useCallback((x: number, y: number) => {
+            // Pick a random type from our exported array
+            const randomType = SHAPE_TYPES[Math.floor(Math.random() * SHAPE_TYPES.length)];
+            
+            const newShape: ShapeData = {
+                id: crypto.randomUUID(),
+                x,
+                y,
+                vy: 0,
+                color: Math.floor(Math.random() * 0xffffff),
+                type: randomType,
+            };
+            
+            setShapes((prev) => [...prev, newShape]);
+        }, []);
 
     
     useTick((ticker: Ticker) => {
@@ -60,19 +59,19 @@ export const ShapeManager = () => {
             />
 
             {/* Render the list of falling shapes */}
-            {shapes.map((s: ShapeData) => (
-                <FallingShape
-                    key={s.id}
-                    id={s.id}
-                    x={s.x}
-                    y={s.y}
-                    color={s.color}
-                    // Explicitly type the id in the callback
-                    onPop={(id: string) => {
-                        setShapes((prev) => prev.filter((sh: ShapeData) => sh.id !== id));
-                    }}
-                />
-            ))}
+                {shapes.map((s: ShapeData) => (
+                    <FallingShape
+                        key={s.id}
+                        id={s.id}
+                        x={s.x}
+                        y={s.y}
+                        color={s.color}
+                        type={s.type}
+                        onPop={(id: string) => {
+                            setShapes((prev) => prev.filter((sh: ShapeData) => sh.id !== id));
+                        }}
+                    />
+                ))}
         </pixiContainer>
     );
 };
