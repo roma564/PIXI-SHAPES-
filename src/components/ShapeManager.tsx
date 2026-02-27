@@ -1,46 +1,40 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTick } from '@pixi/react';
 import { Graphics as PixiGraphics, FederatedPointerEvent, Ticker } from 'pixi.js';
 import { FallingShape } from './FallingShape';
-import { SHAPE_TYPES, type ShapeData } from '../types/ShapeType';
+import { SHAPE_TYPES } from '../types/ShapeType';
+import { useShapeStore } from '../store/useShapeStore';
+
 
 const WIDTH = 800;
 const HEIGHT = 600;
 
 export const ShapeManager = ({ gravity, spawnRate }: { gravity: number, spawnRate: number }) => {
-    const [shapes, setShapes] = useState<ShapeData[]>([]);
+    const { shapes, addShape, removeShape, tick } = useShapeStore();
 
     const spawn = useCallback((x: number, y: number) => {
         const randomType = SHAPE_TYPES[Math.floor(Math.random() * SHAPE_TYPES.length)];
-        const newShape: ShapeData = {
+        addShape({
             id: crypto.randomUUID(),
-            x, y, vy: 0,
+            x,
+            y,
+            vy: 0,
+            width: 50,
+            height: 50,
             color: Math.floor(Math.random() * 0xffffff),
             type: randomType,
-        };
-        setShapes((prev) => [...prev, newShape]);
-    }, []);
+        });
+    }, [addShape]);
 
-    // Handle timed spawning based on spawnRate
     useEffect(() => {
         if (spawnRate <= 0) return;
-        
-        const interval = setInterval(() => {
-            // Spawn at a random X at the top of the screen
-            spawn(Math.random() * WIDTH, -50);
-        }, 1000 / spawnRate);
-
+        const interval = setInterval(() => spawn(Math.random() * WIDTH, -50), 1000 / spawnRate);
         return () => clearInterval(interval);
     }, [spawnRate, spawn]);
 
+    // Simple, clean physics call
     useTick((ticker: Ticker) => {
-        setShapes((prev) =>
-            prev.map((s: ShapeData) => ({
-                ...s,
-                vy: s.vy + gravity * ticker.deltaTime,
-                y: s.y + s.vy * ticker.deltaTime,
-            })).filter((s: ShapeData) => s.y < HEIGHT + 100)
-        );
+        tick(gravity, ticker.deltaTime, HEIGHT);
     });
 
     return (
@@ -52,15 +46,8 @@ export const ShapeManager = ({ gravity, spawnRate }: { gravity: number, spawnRat
                     g.clear().rect(0, 0, WIDTH, HEIGHT).fill(0x1a1a1a);
                 }}
             />
-
-            {shapes.map((s: ShapeData) => (
-                <FallingShape
-                    key={s.id}
-                    {...s}
-                    onPop={(id: string) => {
-                        setShapes((prev) => prev.filter((sh) => sh.id !== id));
-                    }}
-                />
+            {shapes.map((s) => (
+                <FallingShape key={s.id} {...s} onPop={removeShape} />
             ))}
         </pixiContainer>
     );
